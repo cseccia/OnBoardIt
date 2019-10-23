@@ -26,7 +26,9 @@
 #include "Imgui_env.hpp"
 #include "Env.hpp"
 
-int loop_console(Env& env)
+Env *g_Env = new Env();
+
+int loop_console()
 {
   bool done = false;
   std::string line;
@@ -44,10 +46,10 @@ int loop_console(Env& env)
       done = true;
     } else {
       std::string firstWord = line.substr(0, line.find(" "));
-      if (env.map_console_func->count(firstWord) > 0)
+      if (g_Env->map_console_func->count(firstWord) > 0)
       {
         std::string endStr = line.substr(line.find(" ") + 1, line.length());
-        state = ((env.map_console_func->find(firstWord)->second)(endStr) == 0);
+        state = ((g_Env->map_console_func->find(firstWord)->second)(endStr) == 0);
       } else {
         state = false;
       }
@@ -56,7 +58,7 @@ int loop_console(Env& env)
   return 0;
 }
 
-int loop_imgui(Imgui_env& env_imgui, Env& env)
+int loop_imgui(Imgui_env& env_imgui)
 {
   bool show_create_game_window = true;
   ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
@@ -65,12 +67,6 @@ int loop_imgui(Imgui_env& env_imgui, Env& env)
   bool done = false;
   while (!done)
   {
-      // Poll and handle events (inputs, window resize, etc.)
-      // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
-      // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
-      // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
-      // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
-
       SDL_Event event;
       while (SDL_PollEvent(&event))
       {
@@ -141,14 +137,14 @@ int main(int argc, char** argv)
     }
   }
 
-  Env& env = *(new Env());
+  std::cout << g_Env << '\n';
 
   if (console_mode)
   {
-    loop_console(env);
+    loop_console();
   } else {
     Imgui_env& env_imgui = *(new Imgui_env());
-    loop_imgui(env_imgui, env);
+    loop_imgui(env_imgui);
   }
 
 }
