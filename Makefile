@@ -17,7 +17,8 @@
 OBJDIR = obj
 
 EXE = OnBoardIt
-SOURCES = ./src/Tool.cpp ./src/Env.cpp ./src/Imgui_env.cpp ./src/main.cpp
+SOURCES = ./src/Env.cpp ./src/Imgui_env.cpp ./src/main.cpp ./src/Game.cpp ./src/Tool.cpp ./src/ANode.cpp ./src/NodeManager.cpp
+SOURCES += ./src/node/Print.cpp
 SOURCES += ./lib/imgui/examples/imgui_impl_sdl.cpp ./lib/imgui/examples/imgui_impl_opengl3.cpp
 SOURCES += ./lib/imgui/imgui.cpp ./lib/imgui/imgui_demo.cpp ./lib/imgui/imgui_draw.cpp ./lib/imgui/imgui_widgets.cpp
 OBJS = $(addprefix $(OBJDIR)/, $(addsuffix .o, $(basename $(notdir $(SOURCES)))))
@@ -84,8 +85,11 @@ $(OBJDIR)/%.o:./lib/imgui/examples/%.cpp
 $(OBJDIR)/%.o:./lib/imgui/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
+$(OBJDIR)/%.o:./src/node/%.cpp
+	$(CXX) $(CXXFLAGS) -std=c++11 -c -o $@ $<
+
 $(OBJDIR)/%.o:./src/%.cpp
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+	$(CXX) $(CXXFLAGS) -std=c++11 -c -o $@ $<
 
 $(OBJDIR)/%.o:./lib/imgui/examples/libs/gl3w/GL/%.c
 	$(CC) $(CFLAGS) -c -o $@ $<

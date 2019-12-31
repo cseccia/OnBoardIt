@@ -26,8 +26,6 @@
 #include "Imgui_env.hpp"
 #include "Env.hpp"
 
-Env *g_Env = new Env();
-
 int loop_console()
 {
   bool done = false;
@@ -46,10 +44,10 @@ int loop_console()
       done = true;
     } else {
       std::string firstWord = line.substr(0, line.find(" "));
-      if (g_Env->map_console_func->count(firstWord) > 0)
+      if (Env::instance()->map_console_func->count(firstWord) > 0)
       {
         std::string endStr = line.substr(line.find(" ") + 1, line.length());
-        state = ((g_Env->map_console_func->find(firstWord)->second)(endStr) == 0);
+        state = ((Env::instance()->map_console_func->find(firstWord)->second)(endStr) == 0);
       } else {
         state = false;
       }
@@ -137,7 +135,7 @@ int main(int argc, char** argv)
     }
   }
 
-  std::cout << g_Env << '\n';
+  std::cout << Env::instance() << '\n';
 
   if (console_mode)
   {

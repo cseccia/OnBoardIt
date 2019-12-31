@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <unordered_map>
+#include "Game.hpp"
 #include "Tool.hpp"
 
 typedef int (*Func)(std::string&);
@@ -14,12 +15,15 @@ class Env {
 		Env();
     Env( Env const & src );
 		virtual ~Env( void );
+		static Env *instance();
 
     script_map* map_console_func;
+		Game* game;
+
+	private:
+		static Env *p_instance;
 };
 
 std::ostream &	operator<<( std::ostream & o, Env const & i );
-
-extern Env* g_Env;
 
 #endif
