@@ -49,7 +49,7 @@ int loop_console()
         std::string endStr = line.substr(line.find(" ") + 1, line.length());
         state = ((Env::instance()->map_console_func->find(firstWord)->second)(endStr) == 0);
       } else {
-        state = false;
+        state = true;
       }
     }
   }

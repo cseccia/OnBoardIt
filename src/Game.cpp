@@ -1,7 +1,7 @@
 #include "Game.hpp"
 
-Game::Game(char* file_url){
-  memcpy(this->folder_url, file_url, strlen(file_url) + 1);
+Game::Game(char* name){
+  memcpy(this->name, name, strlen(name) + 1);
   return;
 }
 
@@ -12,7 +12,7 @@ Game::~Game( void ) {
 int Game::start(){
   ANode* current_node;
 
-  current_node = this->node_manager.get_begin();
+  current_node = this->get_begin();
   while (current_node != nullptr) {
     current_node->exec();
     current_node = current_node->get_next();
@@ -22,4 +22,49 @@ int Game::start(){
 
 std::ostream &	operator<<( std::ostream & o, Game const & i ) {
   return o;
+}
+
+int Game::create_turn_sketch(std::string& name){
+  TurnSketch* pts;
+
+  std::string* TSName = new std::string(name);
+  pts = new TurnSketch(TSName);
+  this->turn_sketch_map.insert(std::make_pair(*TSName, pts));
+  std::cout << pts->name << '\n';
+  return false;
+}
+
+void Game::set_openend_turn_sketch(std::string& name){
+  if (this->turn_sketch_map.count(name) > 0)
+  {
+    this->opened_turn_sketch = this->turn_sketch_map.find(name)->second;
+  } else {
+    std::cout << "not found" << '\n';
+  }
+}
+
+void Game::print_turn_sketch(std::string& name){
+  TurnSketch* pts;
+
+  if (this->turn_sketch_map.count(name) > 0)
+  {
+    pts = this->turn_sketch_map.find(name)->second;
+  } else {
+    pts = this->opened_turn_sketch;
+  }
+
+  std::cout << pts->list_node() << '\n';
+}
+
+ANode* Game::get_begin(){
+  if (*this->begin != nullptr){
+    return *this->begin;
+  }
+  std::cout << "Start isn't set" << '\n';
+  return nullptr;
+}
+
+bool Game::set_begin(NodeSet::iterator node_id){
+  this->begin = node_id;
+  return false;
 }

@@ -18,6 +18,31 @@ int Tool::create_game(std::string& input){
   return 0;
 }
 
+int Tool::new_turn_sketch(std::string& input){
+  if (Env::instance()->game == nullptr)
+    return 1;
+  Env::instance()->game->create_turn_sketch(input);
+  return 0;
+}
+
+int Tool::open_turn_sketch(std::string& input){
+  Env::instance()->game->set_openend_turn_sketch(input);
+  return 0;
+}
+
+int Tool::list_turn_sketch(std::string& input){
+  for (Game::TurnSketchMap::iterator it = Env::instance()->game->turn_sketch_map.begin(); it != Env::instance()->game->turn_sketch_map.end(); ++it)
+  {
+    std::cout << it->second->name << '\n';
+  }
+  return 0;
+}
+
+int Tool::print_turn_sketch(std::string& input){
+  Env::instance()->game->print_turn_sketch(input);
+  return 0;
+}
+
 int Tool::create_print(std::string& input){
   Env* env = Env::instance();
 
@@ -26,7 +51,7 @@ int Tool::create_print(std::string& input){
     return 1;
   }
   const char* c_input = input.c_str();
-  env->game->node_manager.create_node(NodeManager::NodeType::Print, c_input);
+  env->game->opened_turn_sketch->insert_node(env->game->node_manager.create_node("print", c_input));
 
   return 0;
 }
@@ -36,18 +61,10 @@ int Tool::echo_message(std::string& input){
   return 0;
 }
 
-int Tool::list_node(std::string& input){
-  Env* env = Env::instance();
-
-  std::cout << env->game->node_manager.list_node();
-
-  return 0;
-}
-
 int Tool::set_begin(std::string& input){
   Env* env = Env::instance();
 
-  env->game->node_manager.set_begin(std::stoi(input));
+  env->game->opened_turn_sketch->set_begin(std::stoi(input));
 
   return 0;
 }
@@ -63,12 +80,20 @@ int Tool::link_next_node(std::string& input){
   one = std::stoi(token);
   std::getline(ss, token, ' ');
   two = std::stoi(token);
-  env->game->node_manager.link_node(one, two);
+  env->game->opened_turn_sketch->link_node(one, two);
 
   return 0;
 }
 
 int Tool::start(std::string& input){
+  Env* env = Env::instance();
+
+  env->game->start();
+
+  return 0;
+}
+
+int Tool::save_game(std::string& input){
   Env* env = Env::instance();
 
   env->game->start();

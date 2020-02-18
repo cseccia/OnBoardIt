@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include "Game.hpp"
 #include "Tool.hpp"
+#include "TurnSketch.hpp"
 
 typedef int (*Func)(std::string&);
 typedef std::unordered_map<std::string, Func> script_map;

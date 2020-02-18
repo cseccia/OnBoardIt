@@ -6,7 +6,6 @@
 #include "Game.hpp"
 #include "Env.hpp"
 #include "ANode.hpp"
-#include "node/Print.hpp"
 
 class Tool {
 
@@ -18,10 +17,14 @@ class Tool {
 		static int echo_message(std::string& input);
 		static int create_game(std::string& input);
     static int create_print(std::string& input);
-		static int list_node(std::string& input);
 		static int set_begin(std::string& input);
 		static int link_next_node(std::string& input);
 		static int start(std::string& input);
+		static int save_game(std::string& input);
+		static int new_turn_sketch(std::string& input);
+		static int open_turn_sketch(std::string& input);
+		static int print_turn_sketch(std::string& input);
+		static int list_turn_sketch(std::string& input);
 
 };
 

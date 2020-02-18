@@ -4,12 +4,15 @@
 # include <iostream>
 # include <unordered_set>
 # include <string>
-#include <sstream> //for std::stringstream
+# include <sstream> //for std::stringstream
+# include <unordered_map>
 
 # include "ANode.hpp"
 # include "node/Print.hpp"
 
-typedef std::unordered_multiset<ANode*> NodeSet;
+typedef ANode* (*create_node_func)(va_list);
+
+typedef std::unordered_map<std::string, create_node_func> create_node_map;
 
 
 class NodeManager {
@@ -17,23 +20,12 @@ class NodeManager {
     NodeManager();
     virtual ~NodeManager( void );
 
-    enum class NodeType {
-      Print
-    };
-
-    ANode* create_node(NodeType id...);
-    std::string list_node();
-    ANode* get_begin();
-    bool set_begin(NodeSet::iterator node_id);
-    bool set_begin(int node_id);
-    bool link_node(NodeSet::iterator one, NodeSet::iterator two);
-    bool link_node(int one, int two);
-
+		ANode* create_node(std::string NodeType...);
+    static ANode* create_print(va_list args);
+    bool link_node(ANode* one, ANode* two);
 
 	private:
-    NodeSet::iterator insert_node( ANode* node );
-    NodeSet node_list;
-    NodeSet::iterator begin;
+		create_node_map* map_create_node_func;
 
 };
 #endif
