@@ -8,24 +8,32 @@
 # include <unordered_map>
 
 # include "ANode.hpp"
-# include "node/Print.hpp"
-
-typedef ANode* (*create_node_func)(va_list);
-
-typedef std::unordered_map<std::string, create_node_func> create_node_map;
-
 
 class NodeManager {
 	public:
     NodeManager();
     virtual ~NodeManager( void );
 
-		ANode* create_node(std::string NodeType...);
+		static NodeManager *instance();
+
+		typedef std::function<ANode*(va_list)> Builder;
+		typedef std::unordered_map<std::string, Builder> BuilderMap;
+
+	  int Register(std::string const& key, Builder const& builder);
+	  ANode* Build(std::string const& key, va_list args) const;
+		std::string list_node_type() const;
+
+		ANode* create_node(const std::string NodeType...);
     static ANode* create_print(va_list args);
     bool link_node(ANode* one, ANode* two);
 
 	private:
-		create_node_map* map_create_node_func;
+		static NodeManager *p_instance;
+		BuilderMap node_builder_map;
 
 };
+
+template <typename T>
+	ANode* nodeBuilder(va_list args) { return new T(args); }
+
 #endif

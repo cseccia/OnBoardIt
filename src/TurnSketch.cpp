@@ -49,7 +49,7 @@ bool TurnSketch::set_begin(int node_id){
 }
 
 bool TurnSketch::link_node(NodeSet::iterator one, NodeSet::iterator two){
-  node_manager.link_node((*one),(*two));
+  NodeManager::instance()->link_node((*one),(*two));
   return false;
 }
 

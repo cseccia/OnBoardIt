@@ -51,8 +51,13 @@ int Tool::create_print(std::string& input){
     return 1;
   }
   const char* c_input = input.c_str();
-  env->game->opened_turn_sketch->insert_node(env->game->node_manager.create_node("print", c_input));
+  env->game->opened_turn_sketch->insert_node(NodeManager::instance()->create_node("print", c_input));
 
+  return 0;
+}
+
+int Tool::list_node_type(std::string& input){
+  std::cout << NodeManager::instance()->list_node_type() << '\n';
   return 0;
 }
 

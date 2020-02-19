@@ -1,8 +1,8 @@
 #include "Print.hpp"
 
-Print::Print( std::string& input ) {
+Print::Print( va_list args ) {
   this->p_next = nullptr;
-  std::string* str = new std::string(input);
+  std::string* str = new std::string(va_arg(args, char*));
   this->value = static_cast<void*>(str);
   return;
 }

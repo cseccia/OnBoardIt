@@ -15,6 +15,7 @@ Env::Env( void ) {
   map_console_func->insert(std::make_pair(std::string("list_turn_sketch"), &Tool::list_turn_sketch));
   map_console_func->insert(std::make_pair(std::string("open_turn_sketch"), &Tool::open_turn_sketch));
   map_console_func->insert(std::make_pair(std::string("print_turn_sketch"), &Tool::print_turn_sketch));
+  map_console_func->insert(std::make_pair(std::string("list_node_type"), &Tool::list_node_type));
   this->game = nullptr;
   return;
 }

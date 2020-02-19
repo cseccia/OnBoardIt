@@ -5,6 +5,10 @@ ANode::ANode( void ) : p_next(0) {
 	return;
 }
 
+std::type_index ANode::get_t_id( void ){
+	return typeid(this);
+}
+
 ANode::~ANode( void ) {
 	return;
 }

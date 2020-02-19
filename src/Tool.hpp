@@ -25,6 +25,7 @@ class Tool {
 		static int open_turn_sketch(std::string& input);
 		static int print_turn_sketch(std::string& input);
 		static int list_turn_sketch(std::string& input);
+		static int list_node_type(std::string& input);
 
 };
 

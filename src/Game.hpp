@@ -20,7 +20,6 @@ class Game{
 		typedef std::unordered_multiset<ANode*> NodeSet;
 
 		char name[128];
-		NodeManager node_manager;
 
 		int start();
 

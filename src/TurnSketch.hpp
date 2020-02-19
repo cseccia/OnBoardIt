@@ -31,7 +31,6 @@ class TurnSketch {
 	private:
     NodeSet node_list;
     NodeSet::iterator begin;
-    NodeManager node_manager;
 
 };
 #endif
