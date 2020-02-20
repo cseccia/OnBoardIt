@@ -16,8 +16,10 @@ class Tool {
 
 		static int echo_message(std::string& input);
 		static int create_game(std::string& input);
-    static int create_print(std::string& input);
+		static int create_print(std::string& input);
+    static int create_turn_sketch_node(std::string& input);
 		static int set_begin(std::string& input);
+		static int ts_set_begin(std::string& input);
 		static int link_next_node(std::string& input);
 		static int start(std::string& input);
 		static int save_game(std::string& input);

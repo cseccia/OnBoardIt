@@ -46,25 +46,40 @@ void Game::set_openend_turn_sketch(std::string& name){
 void Game::print_turn_sketch(std::string& name){
   TurnSketch* pts;
 
-  if (this->turn_sketch_map.count(name) > 0)
-  {
+  if (this->turn_sketch_map.count(name) > 0) {
     pts = this->turn_sketch_map.find(name)->second;
   } else {
+    if (this->opened_turn_sketch == nullptr) {
+      std::cout << "no TurnSketch is open" << '\n';
+      return;
+    }
     pts = this->opened_turn_sketch;
   }
 
-  std::cout << pts->list_node() << '\n';
+  std::cout << pts->list_node();
+}
+
+TurnSketch* Game::get_turn_sketch(std::string& name){
+  TurnSketch* pts;
+
+  if (this->turn_sketch_map.count(name) > 0) {
+    pts = this->turn_sketch_map.find(name)->second;
+  } else {
+    std::cout << "no TurnSketch is open" << '\n';
+    return nullptr;
+  }
+  return pts;
 }
 
 ANode* Game::get_begin(){
-  if (*this->begin != nullptr){
-    return *this->begin;
+  if (this->begin != nullptr){
+    return this->begin;
   }
   std::cout << "Start isn't set" << '\n';
   return nullptr;
 }
 
-bool Game::set_begin(NodeSet::iterator node_id){
-  this->begin = node_id;
+bool Game::set_begin(ANode* node){
+  this->begin = node;
   return false;
 }

@@ -25,16 +25,16 @@ class Game{
 
 		int create_turn_sketch(std::string& name);
 		ANode* get_begin();
-		bool set_begin(NodeSet::iterator node_id);
+		bool set_begin(ANode* begin);
 		void set_openend_turn_sketch(std::string& name);
 		void print_turn_sketch(std::string& name);
+		TurnSketch* get_turn_sketch(std::string& name);
 		TurnSketch* opened_turn_sketch;
 		TurnSketchMap turn_sketch_map;
 
   private:
 		char folder_url[128];
-		NodeSet node_list;
-		NodeSet::iterator begin;
+		ANode* begin;
 
 };
 

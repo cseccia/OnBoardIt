@@ -18,7 +18,7 @@ OBJDIR = obj
 
 EXE = OnBoardIt
 SOURCES = ./src/Env.cpp ./src/Imgui_env.cpp ./src/main.cpp ./src/Game.cpp ./src/Tool.cpp ./src/ANode.cpp ./src/NodeManager.cpp ./src/TurnSketch.cpp
-SOURCES += ./src/node/Print.cpp
+SOURCES += ./src/node/Print.cpp ./src/node/TurnSketchNode.cpp
 SOURCES += ./lib/imgui/examples/imgui_impl_sdl.cpp ./lib/imgui/examples/imgui_impl_opengl3.cpp
 SOURCES += ./lib/imgui/imgui.cpp ./lib/imgui/imgui_demo.cpp ./lib/imgui/imgui_draw.cpp ./lib/imgui/imgui_widgets.cpp
 OBJS = $(addprefix $(OBJDIR)/, $(addsuffix .o, $(basename $(notdir $(SOURCES)))))

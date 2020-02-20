@@ -43,10 +43,10 @@ ANode* NodeManager::Build(std::string const& key, va_list args) const {
 }
 
 std::string NodeManager::list_node_type() const {
-	std::string str = "List of sub classes\n";
+	std::string str = "List of sub classes :\n";
 	for (auto it = node_builder_map.begin(); it != node_builder_map.end(); ++it)
 	{
-		str += it->first;
+		str += it->first + "\n";
 	}
 	return str;
 }

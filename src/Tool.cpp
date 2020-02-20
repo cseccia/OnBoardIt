@@ -39,6 +39,12 @@ int Tool::list_turn_sketch(std::string& input){
 }
 
 int Tool::print_turn_sketch(std::string& input){
+  Env* env = Env::instance();
+
+  if (env->game == nullptr){
+    std::cout << "No game is set" << '\n';
+    return 1;
+  }
   Env::instance()->game->print_turn_sketch(input);
   return 0;
 }
@@ -50,14 +56,35 @@ int Tool::create_print(std::string& input){
     std::cout << "No game is set" << '\n';
     return 1;
   }
+  if (env->game->opened_turn_sketch == nullptr){
+    std::cout << "No TurnSketch is open" << '\n';
+    return 1;
+  }
   const char* c_input = input.c_str();
   env->game->opened_turn_sketch->insert_node(NodeManager::instance()->create_node("print", c_input));
 
   return 0;
 }
 
+int Tool::create_turn_sketch_node(std::string& input){
+  Env* env = Env::instance();
+
+  if (env->game == nullptr){
+    std::cout << "No game is set" << '\n';
+    return 1;
+  }
+  if (env->game->opened_turn_sketch == nullptr){
+    std::cout << "No TurnSketch is open" << '\n';
+    return 1;
+  }
+  TurnSketch* ts = env->game->get_turn_sketch(input);
+  env->game->opened_turn_sketch->insert_node(NodeManager::instance()->create_node("TurnSketchNode", ts));
+
+  return 0;
+}
+
 int Tool::list_node_type(std::string& input){
-  std::cout << NodeManager::instance()->list_node_type() << '\n';
+  std::cout << NodeManager::instance()->list_node_type();
   return 0;
 }
 
@@ -66,10 +93,19 @@ int Tool::echo_message(std::string& input){
   return 0;
 }
 
-int Tool::set_begin(std::string& input){
+int Tool::ts_set_begin(std::string& input){
   Env* env = Env::instance();
 
   env->game->opened_turn_sketch->set_begin(std::stoi(input));
+
+  return 0;
+}
+
+int Tool::set_begin(std::string& input){
+  Env* env = Env::instance();
+
+  ANode* begin = env->game->opened_turn_sketch->get_begin();
+  env->game->set_begin(begin);
 
   return 0;
 }
