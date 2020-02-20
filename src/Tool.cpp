@@ -61,7 +61,10 @@ int Tool::create_print(std::string& input){
     return 1;
   }
   const char* c_input = input.c_str();
-  env->game->opened_turn_sketch->insert_node(NodeManager::instance()->create_node("print", c_input));
+  ANode* node = NodeManager::instance()->create_node("Print", c_input);
+  if (node != nullptr){
+    env->game->opened_turn_sketch->insert_node(node);
+  }
 
   return 0;
 }
@@ -78,8 +81,12 @@ int Tool::create_turn_sketch_node(std::string& input){
     return 1;
   }
   TurnSketch* ts = env->game->get_turn_sketch(input);
-  env->game->opened_turn_sketch->insert_node(NodeManager::instance()->create_node("TurnSketchNode", ts));
-
+  if (ts != nullptr){
+    ANode* node = NodeManager::instance()->create_node("TurnSketchNode", ts);
+    if (node != nullptr){
+      env->game->opened_turn_sketch->insert_node(node);
+    }
+  }
   return 0;
 }
 
@@ -103,11 +110,14 @@ int Tool::ts_set_begin(std::string& input){
 
 int Tool::set_begin(std::string& input){
   Env* env = Env::instance();
-
-  ANode* begin = env->game->opened_turn_sketch->get_begin();
-  env->game->set_begin(begin);
-
-  return 0;
+  if (env->game->opened_turn_sketch != nullptr){
+    ANode* node = NodeManager::instance()->create_node("TurnSketchNode", env->game->opened_turn_sketch);
+    if(node != nullptr){
+      env->game->set_begin(node);
+      return 0;
+    }
+  }
+  return 1;
 }
 
 int Tool::link_next_node(std::string& input){

@@ -65,7 +65,7 @@ TurnSketch* Game::get_turn_sketch(std::string& name){
   if (this->turn_sketch_map.count(name) > 0) {
     pts = this->turn_sketch_map.find(name)->second;
   } else {
-    std::cout << "no TurnSketch is open" << '\n';
+    std::cout << "no TurnSketch finded" << '\n';
     return nullptr;
   }
   return pts;

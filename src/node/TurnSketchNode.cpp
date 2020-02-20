@@ -12,6 +12,13 @@ TurnSketchNode::~TurnSketchNode( void ) {
 }
 
 bool TurnSketchNode::exec( void ) {
-  std::cout << "JE SUIS UN TURN SKETCH NODE" << '\n';
+
+  ANode* current_node;
+
+  current_node = this->associated->get_begin();
+  while (current_node != nullptr) {
+    current_node->exec();
+    current_node = current_node->get_next();
+  }
   return false;
 }

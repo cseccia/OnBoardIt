@@ -3,6 +3,7 @@
 
 # include <iostream>
 # include <string>
+# include <iterator>
 # include <sstream> //for std::stringstream
 # include "ANode.hpp"
 # include "node/Print.hpp"
