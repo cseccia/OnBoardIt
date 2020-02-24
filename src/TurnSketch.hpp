@@ -3,7 +3,6 @@
 
 # include <iostream>
 # include <string>
-# include <iterator>
 # include <sstream> //for std::stringstream
 # include "ANode.hpp"
 # include "node/Print.hpp"
@@ -28,6 +27,7 @@ class TurnSketch {
     bool link_node(NodeSet::iterator one, NodeSet::iterator two);
     bool link_node(int one, int two);
     NodeSet::iterator insert_node( ANode* node );
+		int save(std::string* name);
 
 	private:
     NodeSet node_list;

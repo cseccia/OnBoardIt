@@ -1,20 +1,22 @@
 #include "Tool.hpp"
 
 int Tool::create_game(std::string& input){
-  char cstr[input.size() + 13];
-  memcpy(cstr, "game_source/", 12);
-	input.copy(&(cstr[12]), input.size() + 1);
-	cstr[input.size() + 12] = '\0';
+  const char* path = std::__fs::filesystem::current_path().c_str();
+  std::string* name = new std::string(input);
+  char cstr[input.size() + 15 + strlen(path)];
+  memcpy(cstr, path, strlen(path));
+  memcpy(cstr + strlen(path), "/game_source/", 13);
+	input.copy(&(cstr[strlen(path) + 13]), input.size() + 1);
 
-  std::cout << cstr << '\n';
+  cstr[input.size() + strlen(path) + 13] = '/';
+	cstr[input.size() + strlen(path) + 14] = '\0';
 
-  const int dir_err = mkdir(cstr, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-  if (-1 == dir_err)
-  {
-    printf("Error creating directory!\n");
-    exit(1);
+  try{
+    Env::instance()->game = new Game(cstr, name);
+  } catch(std::string const& e) {
+    std::cout << e << '\n';
+    return 1;
   }
-  Env::instance()->game = new Game(cstr);
   return 0;
 }
 
@@ -147,9 +149,43 @@ int Tool::start(std::string& input){
 int Tool::save_game(std::string& input){
   Env* env = Env::instance();
 
-  env->game->start();
+  if (env->game == nullptr){
+    std::cout << "No game is set" << '\n';
+    return 1;
+  }
+  return env->game->save();
+}
 
-  return 0;
+int Tool::save_turn_sketch(std::string& input){
+  Env* env = Env::instance();
+
+  if (env->game == nullptr){
+    std::cout << "No game is set" << '\n';
+    return 1;
+  }
+  std::string* folder_url = new std::string(env->game->folder_url);
+  if (env->game->opened_turn_sketch == nullptr){
+    std::cout << "No TurnSketch is open" << '\n';
+    return 1;
+  }
+  return env->game->opened_turn_sketch->save(folder_url);
+}
+
+int Tool::save_all(std::string& input){
+  Env* env = Env::instance();
+
+  if (env->game == nullptr){
+    std::cout << "No game is set" << '\n';
+    return 1;
+  }
+  std::string* folder_url = new std::string(env->game->folder_url);
+  for (Game::TurnSketchMap::iterator it = env->game->turn_sketch_map.begin(); it != env->game->turn_sketch_map.end(); ++it)
+  {
+    if (it->second->save(folder_url)){
+      return 1;
+    }
+  }
+  return env->game->save();
 }
 
 Tool::Tool( void ) {

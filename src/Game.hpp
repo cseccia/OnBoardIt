@@ -3,6 +3,9 @@
 
 #include <iostream>
 #include <sys/stat.h>
+#include <filesystem>
+#include <fstream>
+#include <iostream>
 
 #include "ANode.hpp"
 #include "NodeManager.hpp"
@@ -12,14 +15,14 @@ class Game{
 
 
 	public:
-		Game( char* file_url);
+		Game( char* file_url, std::string* name );
 		virtual ~Game( void );
 		bool insert_node( ANode* node );
 
 		typedef std::unordered_map<std::string, TurnSketch*> TurnSketchMap;
 		typedef std::unordered_multiset<ANode*> NodeSet;
 
-		char name[128];
+		std::string name;
 
 		int start();
 
@@ -29,11 +32,12 @@ class Game{
 		void set_openend_turn_sketch(std::string& name);
 		void print_turn_sketch(std::string& name);
 		TurnSketch* get_turn_sketch(std::string& name);
+		int save();
 		TurnSketch* opened_turn_sketch;
 		TurnSketchMap turn_sketch_map;
+		char folder_url[128];
 
   private:
-		char folder_url[128];
 		ANode* begin;
 
 };

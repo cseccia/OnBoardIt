@@ -56,3 +56,14 @@ bool TurnSketch::link_node(NodeSet::iterator one, NodeSet::iterator two){
 bool TurnSketch::link_node(int one, int two){
   return this->link_node(std::next(this->node_list.begin(), one), std::next(this->node_list.begin(), two));
 }
+
+int TurnSketch::save(std::string* folder_url){
+  std::cout << "Saving turn sketch : " << this->name << '\n';
+
+  std::string file_url;
+  file_url = *folder_url + this->name + ".tsk";
+  std::cout << file_url << std::endl;
+
+
+  return 0;
+}

@@ -23,6 +23,8 @@ class Tool {
 		static int link_next_node(std::string& input);
 		static int start(std::string& input);
 		static int save_game(std::string& input);
+		static int save_all(std::string& input);
+		static int save_turn_sketch(std::string& input);
 		static int new_turn_sketch(std::string& input);
 		static int open_turn_sketch(std::string& input);
 		static int print_turn_sketch(std::string& input);

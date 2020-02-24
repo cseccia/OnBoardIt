@@ -42,14 +42,14 @@ int loop_console()
     std::getline(std::cin, line);
     if (!line.compare("exit")){
       done = true;
-    } else {
+    } else if (line.compare("")){
       std::string firstWord = line.substr(0, line.find(" "));
       if (Env::instance()->map_console_func->count(firstWord) > 0)
       {
         std::string endStr = line.substr(line.find(" ") + 1, line.length());
         state = ((Env::instance()->map_console_func->find(firstWord)->second)(endStr) == 0);
       } else {
-        state = true;
+        state = false;
       }
     }
   }

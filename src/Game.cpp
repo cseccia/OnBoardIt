@@ -1,7 +1,42 @@
 #include "Game.hpp"
 
-Game::Game(char* name){
-  memcpy(this->name, name, strlen(name) + 1);
+Game::Game(char* url, std::string* name_game) {
+  memcpy(this->folder_url, url, strlen(url) + 1);
+  this->name = *name_game;
+
+  int dir_err = mkdir(this->folder_url, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+  if (-1 == dir_err) {
+    throw std::string("Error creating directory!");
+  }
+
+  char folder_ts[11] = "TurnSketch";
+  char folder_root[strlen(this->folder_url) + 13];
+  memcpy(folder_root, this->folder_url, strlen(this->folder_url) + 1);
+  strcat(folder_root, folder_ts);
+  dir_err = mkdir(folder_root, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+  if (-1 == dir_err) {
+    throw std::string("Error creating directory!");
+  }
+
+  char game_file[256];
+  memcpy(game_file, this->folder_url, strlen(this->folder_url) + 1);
+  strcat(game_file, this->name.c_str());
+  strcat(game_file, ".obi\0");
+  std::ofstream wf(game_file, std::ios::out | std::ios::binary);
+  if(!wf) {
+    throw std::string("Error creating file!");
+  }
+
+  wf.write(this->name.c_str(), sizeof(this->name));
+  wf.write("\0", 1);
+
+  wf.close();
+  if(!wf.good()) {
+    throw std::string("Error occurred at writing time!");
+  }
+
+  std::cout << this->folder_url << '\n';
+  std::cout << this->name << '\n';
   return;
 }
 
@@ -82,4 +117,9 @@ ANode* Game::get_begin(){
 bool Game::set_begin(ANode* node){
   this->begin = node;
   return false;
+}
+
+int Game::save(){
+  std::cout << "Saving game : " << this->name << '\n';
+  return 0;
 }
