@@ -18,7 +18,7 @@ class TurnSketch {
 	public:
     TurnSketch(std::string* name);
     virtual ~TurnSketch( void );
-    std::string name;
+    char name[128];
 
     std::string list_node();
     ANode* get_begin();

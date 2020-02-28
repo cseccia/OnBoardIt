@@ -153,7 +153,25 @@ int Tool::save_game(std::string& input){
     std::cout << "No game is set" << '\n';
     return 1;
   }
-  return env->game->save();
+  try{
+    env->game->save();
+  } catch(std::string const& e) {
+    std::cout << e << '\n';
+    return 1;
+  }
+  return 0;
+}
+
+int Tool::open_game(std::string& input){
+  Env* env = Env::instance();
+
+  try{
+    env->game = new Game(input.c_str());
+  } catch(std::string const& e) {
+    std::cout << e << '\n';
+    return 1;
+  }
+  return 0;
 }
 
 int Tool::save_turn_sketch(std::string& input){
@@ -186,6 +204,29 @@ int Tool::save_all(std::string& input){
     }
   }
   return env->game->save();
+}
+
+int Tool::print_game(std::string& input){
+  Env* env = Env::instance();
+
+  if (env->game == nullptr){
+    std::cout << "No game is set" << '\n';
+    return 1;
+  }
+  std::cout << env->game->name << '\n';
+  return 0;
+}
+
+int Tool::set_game_name(std::string& input){
+  Env* env = Env::instance();
+
+  if (env->game == nullptr){
+    std::cout << "No game is set" << '\n';
+    return 1;
+  }
+  memset(env->game->name, 0, sizeof env->game->name);
+  input.copy(env->game->name, input.size() + 1);
+  return 0;
 }
 
 Tool::Tool( void ) {

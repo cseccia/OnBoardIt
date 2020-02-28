@@ -30,6 +30,9 @@ class Tool {
 		static int print_turn_sketch(std::string& input);
 		static int list_turn_sketch(std::string& input);
 		static int list_node_type(std::string& input);
+		static int open_game(std::string& input);
+		static int print_game(std::string& input);
+		static int set_game_name(std::string& input);
 
 };
 

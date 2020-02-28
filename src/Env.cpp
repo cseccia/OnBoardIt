@@ -18,8 +18,11 @@ Env::Env( void ) {
   map_console_func->insert(std::make_pair(std::string("list_turn_sketch"), &Tool::list_turn_sketch));
   map_console_func->insert(std::make_pair(std::string("open_turn_sketch"), &Tool::open_turn_sketch));
   map_console_func->insert(std::make_pair(std::string("print_turn_sketch"), &Tool::print_turn_sketch));
+  map_console_func->insert(std::make_pair(std::string("print_game"), &Tool::print_game));
+  map_console_func->insert(std::make_pair(std::string("set_game_name"), &Tool::set_game_name));
   map_console_func->insert(std::make_pair(std::string("list_node_type"), &Tool::list_node_type));
   map_console_func->insert(std::make_pair(std::string("set_begin_ts"), &Tool::ts_set_begin));
+  map_console_func->insert(std::make_pair(std::string("open_game"), &Tool::open_game));
   this->game = nullptr;
   return;
 }

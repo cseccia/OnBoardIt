@@ -1,7 +1,8 @@
 #include "TurnSketch.hpp"
 
 TurnSketch::TurnSketch( std::string* input ){
-  this->name = *input;
+  memset(this->name, 0, sizeof this->name);
+  input->copy(this->name, input->size() + 1);
 	return;
 }
 

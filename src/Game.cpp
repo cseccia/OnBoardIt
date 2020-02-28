@@ -2,7 +2,9 @@
 
 Game::Game(char* url, std::string* name_game) {
   memcpy(this->folder_url, url, strlen(url) + 1);
-  this->name = *name_game;
+
+  memset(this->name, 0, sizeof this->name);
+  name_game->copy(this->name, name_game->size() + 1);
 
   int dir_err = mkdir(this->folder_url, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
   if (-1 == dir_err) {
@@ -20,14 +22,13 @@ Game::Game(char* url, std::string* name_game) {
 
   char game_file[256];
   memcpy(game_file, this->folder_url, strlen(this->folder_url) + 1);
-  strcat(game_file, this->name.c_str());
-  strcat(game_file, ".obi\0");
+  strcat(game_file, "game.obi\0");
   std::ofstream wf(game_file, std::ios::out | std::ios::binary);
   if(!wf) {
     throw std::string("Error creating file!");
   }
 
-  wf.write(this->name.c_str(), sizeof(this->name));
+  wf.write(this->name, sizeof(this->name));
   wf.write("\0", 1);
 
   wf.close();
@@ -40,8 +41,47 @@ Game::Game(char* url, std::string* name_game) {
   return;
 }
 
+Game::Game(const char* folder_url) {
+  std::streampos size;
+  char* memblock;
+  char game_file[256];
+
+  memcpy(game_file, folder_url, strlen(folder_url) + 1);
+  strcat(game_file, "/game.obi\0");
+
+  std::cout << game_file << '\n';
+  std::ifstream file (game_file, std::ios::in|std::ios::binary|std::ios::ate);
+
+  if (file.is_open()){
+    size = file.tellg();
+    memblock = new char [size];
+    char* p_memblock = memblock;
+    file.seekg (0, std::ios::beg);
+    file.read (memblock, size);
+    file.close();
+    memcpy(this->folder_url, folder_url, strlen(folder_url) + 1);
+
+    SaveMap save_map = this->get_save_map();
+    for (SaveMap::iterator it = save_map.begin(); it != save_map.end(); ++it) {
+      memcpy(it->second, p_memblock, it->first);
+      p_memblock += it->first;
+    }
+
+    delete[] memblock;
+   } else {
+     throw std::string("File not found !");
+   }
+}
+
 Game::~Game( void ) {
 	return;
+}
+
+Game::SaveMap Game::get_save_map() {
+  SaveMap save_map;
+
+  save_map.insert(std::make_pair(128, &this->name));
+  return save_map;
 }
 
 int Game::start(){
@@ -121,5 +161,25 @@ bool Game::set_begin(ANode* node){
 
 int Game::save(){
   std::cout << "Saving game : " << this->name << '\n';
+  char game_file[256];
+  memcpy(game_file, this->folder_url, strlen(this->folder_url) + 1);
+  strcat(game_file, "/game.obi\0");
+  std::ofstream wf(game_file, std::ios::out | std::ios::binary);
+  if(!wf) {
+    throw std::string("Error creating file!");
+  }
+
+  SaveMap save_map = this->get_save_map();
+  for (SaveMap::iterator it = save_map.begin(); it != save_map.end(); ++it) {
+    wf.write(reinterpret_cast<char*>(it->second), it->first);
+  }
+
+  wf.write("\0", 1);
+  std::cout << this->name << '\n';
+  std::cout << game_file << '\n';
+  wf.close();
+  if(!wf.good()) {
+    throw std::string("Error occurred at writing time!");
+  }
   return 0;
 }
